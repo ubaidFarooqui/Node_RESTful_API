@@ -10,7 +10,7 @@ var app = express();
 
 app.use(bodyParser.json());
 
-app.post('/todos', (req, res) => { //this is server routes handlers
+app.post('/todos', (req, res) => { //this is server routes handlers for post todo request
     var todo = new Todo({
         text: req.body.text 
     });
@@ -22,9 +22,19 @@ app.post('/todos', (req, res) => { //this is server routes handlers
     });
 });
 
+app.get('/todos', (req, res) => { //this is server route handlers for get todo request
+    Todo.find().then((todos) => {
+        res.send({todos});
+    }, (e) => {
+        res.status(400).send(e);
+    })
+});
+
+
+
 app.listen(3000, () => {
     console.log('Started on Port 3000');
-});
+}); 
 
 
 module.exports = {app}; 
