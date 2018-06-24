@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-Parser');
 
 
-var {mongoose} = require('./db/mongoose');
+var {mongoose} = require('./db/mongoose'); // file to a folder
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
@@ -10,7 +10,7 @@ var app = express();
 
 app.use(bodyParser.json());
 
-app.post('/todos', (req, res) => {
+app.post('/todos', (req, res) => { //this is server routes handlers
     var todo = new Todo({
         text: req.body.text 
     });
@@ -27,9 +27,7 @@ app.listen(3000, () => {
 });
 
 
-
-
-
+module.exports = {app}; 
 
 
 
