@@ -27,7 +27,7 @@ app.get('/todos', (req, res) => { //this is server route handlers for get todo r
         res.send({todos});
     }, (e) => {
         res.status(400).send(e);
-    })
+    });
 });
 
 
