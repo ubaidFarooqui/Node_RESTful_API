@@ -1,5 +1,5 @@
 var express = require('express');
-var bodyParser = require('body-Parser'); // extracts the body of the incoming request and makes it available                                             to req.body , it also makes bodyParser.json() method makes sure                                               that the body of the incoming equest is properly JSON formatted
+var bodyParser = require('body-parser'); // extracts the body of the incoming request and makes it available                                             to req.body , it also makes bodyParser.json() method makes sure                                               that the body of the incoming equest is properly JSON formatted
 const {ObjectID}= require('mongodb');
 
 var {mongoose} = require('./db/mongoose'); // file to a folder
