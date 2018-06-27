@@ -99,7 +99,7 @@ describe('GET /todo/:id', () => {
     });  
     
     it('should return 404 if todo not found', (done) => {
-       var hexID = new ObjectID().toHexString();
+       var hexID = new ObjectID().toHexString(); //this creates a valid ID but not present in the database
         request(app)
         .get(`/todos/${hexID}`)
         .expect(404)
@@ -108,7 +108,7 @@ describe('GET /todo/:id', () => {
     
     it('should return 404 for non-object ids', (done) => {
         request(app)
-        .get('/todos/123abc')
+        .get('/todos/123abc') // this is a wrong ID attached, so on our get route, it expectsg 400
         .expect(400)
         .end(done);
     });
