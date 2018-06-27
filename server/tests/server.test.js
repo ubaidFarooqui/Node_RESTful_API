@@ -2,13 +2,18 @@ const expect = require('expect'); //expect for assertion
 const request = require('supertest');// mocha for the entire test sweet
                                      // super test for test our express routes
                                         // nodemon for watching out for the changes
+                                     // remember in these test cases, we are not passing the data from url 
+                                      // data passed are mock data
+const {ObjectID} = require('mongodb');
 
 const {app} = require('./../server');
 const {Todo} = require('./../models/todo'); // one folder to another folder
 
 const todos = [{
+    _id: new ObjectID(),
     text: 'First test todo'
 }, {
+    _id : new ObjectID(),
     text: 'Second tst todo'
 }];
 
@@ -82,8 +87,32 @@ describe('GET /todos', () => {
 });
 
 
-
-
+describe('GET /todo/:id', () => {
+    it('should return todo doc', (done)=> {
+        request(app)
+        .get(`/todos/${todos[0]._id.toHexString()}`)//toHexString methods converts the object ID to the str
+        .expect(200)                               //because we pass string from the url so id has to be str
+        .expect((res) => {
+            expect(res.body.todo.text).toBe(todos[0].text); //this is a custom expect
+        })
+        .end(done);
+    });  
+    
+    it('should return 404 if todo not found', (done) => {
+       var hexID = new ObjectID().toHexString();
+        request(app)
+        .get(`/todos/${hexID}`)
+        .expect(404)
+        .end(done);
+    });
+    
+    it('should return 404 for non-object ids', (done) => {
+        request(app)
+        .get('/todos/123abc')
+        .expect(400)
+        .end(done);
+    });
+});
 
 
 
