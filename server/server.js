@@ -1,6 +1,6 @@
 var express = require('express');
-var bodyParser = require('body-Parser');
-
+var bodyParser = require('body-Parser'); // extracts the body of the incoming request and makes it available                                             to req.body , it also makes bodyParser.json() method makes sure                                               that the body of the incoming equest is properly JSON formatted
+const {ObjectID}= require('mongodb');
 
 var {mongoose} = require('./db/mongoose'); // file to a folder
 var {Todo} = require('./models/todo');
@@ -28,6 +28,24 @@ app.get('/todos', (req, res) => { //this is server route handlers for get todo r
     }, (e) => {
         res.status(400).send(e);
     });
+});
+
+
+app.get('/todos/:id', (req, res) => { //todo with id from postman route
+    var id = req.params.id;
+    if(!ObjectID.isValid(id)) {
+        return res.status(400).send();
+    } 
+    Todo.findById(id).then((todo) => {
+        if (todo) {
+        res.send({todo});    
+        }
+        else {
+            res.status(404).send('todo not found with this ID');
+        }
+    }).catch((err) => {
+       res.status(400).send();
+    })
 });
 
 
