@@ -32,7 +32,7 @@ app.get('/todos', (req, res) => { //this is server route handlers for get todo r
 });
 
 
-app.get('/todos/:id', (req, res) => { //todo with id from postman route
+app.get('/todos/:id', (req, res) => { //getting todos route with id from postman
     var id = req.params.id;
     if(!ObjectID.isValid(id)) {
         return res.status(400).send();
@@ -49,10 +49,27 @@ app.get('/todos/:id', (req, res) => { //todo with id from postman route
     })
 });
 
+app.delete('/todos/:id', (req, res) => { // deleting todo route with id from postman
+    var id = req.params.id;
+    if(!ObjectID.isValid(id)) {
+        return res.status(400).send() 
+    }
+    Todo.findByIdAndRemove(id).then((todo) => {
+        if (todo) {
+            res.status(200).send({todo});
+        }
+        else {
+            res.status(404).send('todo to be deleted not found with this ID');
+        }
+    }).catch((err) => {
+        res.status(400).send();
+    })
+});
+
 
 
 app.listen(port, () => {
-    console.log(`Started on Port 3000 ${port}`);
+    console.log(`Started on Port ${port}`);
 }); 
 
 
