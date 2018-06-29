@@ -13,5 +13,5 @@ const {User} = require('./../server/models/user');
 //Todo.findByIdAndRemove()  this removes the document with specific ID provided and also return the doc
 
 Todo.findByIdAndRemove('5b36b4ecf46cb80f803623e6').then((todo)=> {
-    console.log(todo);
+    console.log(todo); 
 });
