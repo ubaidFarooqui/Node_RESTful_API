@@ -114,6 +114,58 @@ describe('GET /todo/:id', () => {
     });
 });
 
+describe('DELETE /todo/:id', () => {
+    it('should remove and return todo doc', (done)=> {
+        var hexID = todos[0]._id.toHexString();
+        request(app)
+        .delete(`/todos/${hexID}`)//toHexString methods converts the object ID to the str
+        .expect(200)                               //because we pass string from the url so id has to be str
+        .expect((res) => {
+            expect(res.body.todo._id).toBe(hexID); //this is a custom expect
+        })
+        .end((err, res) => {
+            if (err){
+                return done(err);
+            }
+            else {
+                Todo.findById(hexID).then((todo) => {
+                    expect(todo).toNotExist();
+                    done();
+                }).catch((e) => done(e));
+            }
+        });
+    });  
+    
+    it('should return 404 if todo not found', (done) => {
+       var hexID = new ObjectID().toHexString(); //this creates a valid ID but not present in the database
+        request(app)
+        .delete(`/todos/${hexID}`)
+        .expect(404)
+        .end(done);
+    });
+    
+    it('should return 400 for non-object ids', (done) => {
+        request(app)
+        .delete('/todos/123abc') // this is a wrong ID attached, so on our get route, it expectsg 400
+        .expect(400)
+        .end(done);
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
